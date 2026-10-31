@@ -30,6 +30,9 @@
 | 08 待讨论问题 | 未决问题 | https://app.notion.com/p/40a2cfb068d781e59363fff299d8d8dc |
 | 09 平台规划问题清单(20 项) | 规划问题 | https://app.notion.com/p/40a2cfb068d78173968bf931b4a357e8 |
 | 10 待决策问题(数据库) | 定不下来的问题、选项与推荐 | https://app.notion.com/p/a862001ad3c9457c9b3bfd51ff404d65 |
+| 11 实验专区(Codex) | Codex 做的实验、结果与样本 | https://app.notion.com/p/40a2cfb068d78166b1fbec9dcf641b82 |
+
+**11 实验专区归 Codex**:实验由 Codex 执行并记录(数据库「实验记录」,data source `collection://6db1aaf2-5d07-4361-8d95-536e30897c81`)。Claude 默认只读,用户明确要求才改动;Codex 的规则写在仓库根目录 `AGENTS.md`。
 
 链接打不开时,用 `notion-search` 按标题找。
 
