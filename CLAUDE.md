@@ -1,0 +1,60 @@
+# Cloud Manage Agent 项目指引
+
+面向企业的通用 Agent 管理平台(云端托管;沙箱 / Loop / Harness 在云端,本地只做轻量入口)。
+本文件随仓库提交,团队成员的 Claude 都会读到。
+
+## Notion 是架构与项目信息的唯一参考源(按需读取)
+
+**不需要每次开新会话就通读 Notion。** 只在以下情况去读:
+
+- 用户明确说"去读 Notion / 看一下架构 / 按文档来"时;
+- 任务确实依赖架构或决策(例如设计模块、改接口、动版本规则),而你不确定时,只读相关的那一页。
+
+读取方式:用 **Notion MCP 工具**(`notion-fetch`、`notion-search`),不要用浏览器操作 Notion;MCP 做不到的事(分享权限、邀请链接、工作区设置)才用浏览器,并先说明。
+
+### 目录(按需挑一页读)
+
+- 团队空间:`cloud manage agent`(team id `31c2cfb0-68d7-8112-b427-00428143fb05`)
+- 总入口:[云管理 Agent 项目文档](https://app.notion.com/p/40a2cfb068d781a19891ddcfab33705a)
+
+| 页面 | 内容 | 链接 |
+|---|---|---|
+| 01 产品定位与一期需求 | 做什么、一期范围 | https://app.notion.com/p/40a2cfb068d7814d8558ed9749c71de0 |
+| 02 系统架构设计 | 整体架构,写代码最相关 | https://app.notion.com/p/40a2cfb068d781c79835f6e98b1f402c |
+| 03 版本控制与热更新 | 大小版本、冷启动 / 热更新 | https://app.notion.com/p/40a2cfb068d78198b60af1e071efa5bb |
+| 04 记忆、知识库与企业数据沉淀 | 记忆、知识库、数据 | https://app.notion.com/p/40a2cfb068d78174936ed7e5dfb34d79 |
+| 05 已有 Agent 接入与可观测性 | 接入、任务 / Token / 成本 | https://app.notion.com/p/40a2cfb068d781a1882bf64a18433a42 |
+| 06 竞品与开源项目调研 | 调研 | https://app.notion.com/p/40a2cfb068d781fca4f5f5d0990883f6 |
+| 07 会议纪要与待办 | 会议与待办 | https://app.notion.com/p/40a2cfb068d781d0a862d924c625f7e3 |
+| 08 待讨论问题 | 未决问题 | https://app.notion.com/p/40a2cfb068d781e59363fff299d8d8dc |
+| 09 平台规划问题清单(20 项) | 规划问题 | https://app.notion.com/p/40a2cfb068d78173968bf931b4a357e8 |
+
+链接打不开时,用 `notion-search` 按标题找。
+
+### 写回 Notion
+
+- 架构、决策、接口、版本规则变化时,更新对应子页,并保持总入口目录同步。
+- **禁止**在 GitHub 提交各自版本的架构文档;架构只写 Notion。
+- 未确认内容在 Notion 标注"待确认"(例如执行底座 Pi / Dify)。
+- 代码与 Notion 冲突或文档过时时,先告诉用户,不要自行偏离。
+
+## 已确定的核心决策(摘要,以 Notion 为准)
+
+- 纯云端托管;云端大脑 + 本地手脚。
+- 执行底座:Pi(Dify 待确认)。
+- 工具与 Loop 解耦:Loop 只认 Tools Gateway / Skills Gateway。
+- 版本规则:上层 Harness 变动 = 冷启动 + 大版本 + 重启沙箱;下层工具 / Skill 变动 = 热更新 + 小版本 + 不重启沙箱。
+- 三个端:网页版、桌面版(员工),管理后台(管理层)。
+- 数据集中云端:业务资料 OSS,日志在服务器;权限 公司 → 部门 → 岗位 → 个人。
+
+## 代码与 Git
+
+- 仓库:https://github.com/pans1es/cloud-managed-agents(分支 `main`)。
+- Windows + PowerShell:不支持 `&&`,用 `;` 连接命令。
+- 推送、开 PR 等对外操作按用户要求进行;GitHub MCP 需用户先通过 `/mcp` 授权。
+
+```powershell
+git status
+git add -A; git commit -m "说明"
+git push
+```
