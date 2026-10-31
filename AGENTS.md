@@ -58,6 +58,15 @@ https://app.notion.com/p/40a2cfb068d781a19891ddcfab33705a
 5. Notion 放结论、关键数据表和代表性样本,不贴大段原始日志。
 6. 不提交 API Key、Token 等密钥;用环境变量或工作目录里的 `.env`。
 
+## 模型接入
+
+- 评测、测试、实验里的文本模型,统一用阿里云百炼 MaaS 的 OpenAI 兼容接口:
+  `LLM_BASE_URL=https://llm-cwekkaj9yre7cv84.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`
+- API Key 在 Notion「12 模型接入(统一配置)」:https://app.notion.com/p/40a2cfb068d781c6847fc8419ca648d1
+- 在实验工作目录里放 `.env`(模板见仓库 `.env.example`),只从环境变量读 `LLM_BASE_URL`、`LLM_API_KEY`;工具只认 OpenAI 变量名时,映射到 `OPENAI_BASE_URL` / `OPENAI_API_KEY`。
+- **默认文本模型:`qwen3.7-plus`**(`LLM_MODEL`)。需要可复现时固定用快照版 `qwen3.7-plus-2026-05-26`。换其他模型对比要在实验里写明。
+- 可用模型以 `GET {LLM_BASE_URL}/models` 为准;每次实验都记录实际用的模型 ID。
+
 ## 已确定的核心决策(摘要,以 Notion 为准)
 
 - 纯云端托管;云端大脑 + 本地手脚。

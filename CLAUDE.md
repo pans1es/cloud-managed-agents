@@ -31,6 +31,7 @@
 | 09 平台规划问题清单(20 项) | 规划问题 | https://app.notion.com/p/40a2cfb068d78173968bf931b4a357e8 |
 | 10 待决策问题(数据库) | 定不下来的问题、选项与推荐 | https://app.notion.com/p/a862001ad3c9457c9b3bfd51ff404d65 |
 | 11 实验专区(Codex) | Codex 做的实验、结果与样本 | https://app.notion.com/p/40a2cfb068d78166b1fbec9dcf641b82 |
+| 12 模型接入(统一配置) | 统一使用的文本模型接口与 Key | https://app.notion.com/p/40a2cfb068d781c6847fc8419ca648d1 |
 
 **11 实验专区归 Codex**:实验由 Codex 执行并记录(数据库「实验记录」,data source `collection://6db1aaf2-5d07-4361-8d95-536e30897c81`)。Claude 默认只读,用户明确要求才改动;Codex 的规则写在仓库根目录 `AGENTS.md`。
 
@@ -60,6 +61,12 @@
 - 版本规则:上层 Harness 变动 = 冷启动 + 大版本 + 重启沙箱;下层工具 / Skill 变动 = 热更新 + 小版本 + 不重启沙箱。
 - 三个端:网页版、桌面版(员工),管理后台(管理层)。
 - 数据集中云端:业务资料 OSS,日志在服务器;权限 公司 → 部门 → 岗位 → 个人。
+
+## 模型接入
+
+- 文本模型统一用阿里云百炼 MaaS 的 OpenAI 兼容接口,说明见 Notion「12 模型接入(统一配置)」。
+- 默认文本模型 `qwen3.7-plus`(需要可复现时用快照版 `qwen3.7-plus-2026-05-26`)。
+- 代码只从环境变量读 `LLM_BASE_URL`、`LLM_API_KEY`、`LLM_MODEL`;本地放 `.env`(已 gitignore),模板是 `.env.example`。Key 不写进代码、日志或提交。
 
 ## 代码与 Git
 
