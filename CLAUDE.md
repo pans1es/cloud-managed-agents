@@ -3,6 +3,11 @@
 面向企业的通用 Agent 管理平台(云端托管;沙箱 / Loop / Harness 在云端,本地只做轻量入口)。
 本文件随仓库提交,团队成员的 Claude 都会读到。
 
+## 语言:统一用简体中文
+
+所有给用户看的文字一律用**简体中文**,包括:回复正文、任务清单(update_plan)、结尾的下一步提示框(wrap_up 的 recap / ask / 按钮文字)、提交说明以外的说明文字、写进 Notion 的内容。
+不要夹英文句子,也不要用繁体。代码、命令、文件名、专有名词(如 Agent、Harness、PR)可以保留原文。
+
 ## Notion 是架构与项目信息的唯一参考源(按需读取)
 
 **不要每次写代码前都读 Notion。** 只在用户明确要求时才读(例如"去读 Notion / 看一下架构 / 按文档来")。
@@ -12,6 +17,32 @@
 - **主动提示(只提示,不自行读)**:每次开始新任务时,以及碰到设计 / 架构类决定前,提示一句"Notion 可能有新内容,要不要读一下?"。其他时候不打扰。
 
 读取方式:用 **Notion MCP 工具**(`notion-fetch`、`notion-search`),不要用浏览器操作 Notion;MCP 做不到的事(分享权限、邀请链接、工作区设置)才用浏览器,并先说明。
+没有原生 Notion 连接器的成员(工作区访客),用 `notion-agent`(集成 Token)读写,见下一节。
+
+### 访客成员如何接入 Notion
+
+访客连不了 Notion 官方原生连接器,改用集成 Token + Notion 官方开源 MCP 服务(`@notionhq/notion-mcp-server`)。
+
+- 前提:工作区所有者已在集成的「内容访问权限」里勾选「云管理 Agent 项目文档」;本机 Node.js ≥ 18;Token 由所有者私下发给你。
+- **Token 只放在本机用户级配置里**,不进仓库、`.env`、日志或聊天记录。命令由成员自己在终端运行,不要让 Claude 代填 Token。
+- Claude Code(`-s user` 存在用户配置,不会被提交)。Windows 在 **Git Bash** 里运行(PowerShell 会吞掉 `--` 导致报 `unknown option '-y'`;`MSYS_NO_PATHCONV=1` 防止 `/c` 被改写成路径);Mac / Linux 去掉 `MSYS_NO_PATHCONV=1` 和 `cmd /c`:
+
+```bash
+MSYS_NO_PATHCONV=1 claude mcp add notion-agent -s user -e NOTION_TOKEN=<你的 Token> -- cmd /c npx -y @notionhq/notion-mcp-server
+```
+
+- Codex:在 `~/.codex/config.toml` 加(Windows 的 npx 是 `.cmd` 脚本,直接写 `command = "npx"` 会报 WinError 2,要经 `cmd /c`;Mac / Linux 用 `command = "npx"`、`args = ["-y", "@notionhq/notion-mcp-server"]`):
+
+```toml
+[mcp_servers.notion_agent]
+command = "cmd"
+args = ["/c", "npx", "-y", "@notionhq/notion-mcp-server"]
+env = { NOTION_TOKEN = "<你的 Token>" }
+```
+
+- 重启后 `/mcp` 里 `notion-agent` 显示 connected,再让 Claude"用 notion-agent 搜索「云管理 Agent 项目文档」,读出目录",能列出 01~12 子页即连通。
+- 工具名直接对应 Notion API(如 `API-post-search`、`API-retrieve-a-page`),不是 `notion-fetch` / `notion-search`;读长页面要多调几次。
+- 改动在 Notion 里显示为「cloud manage Agent」机器人所做;需要署名时(例如决策结论)在正文写明"由 XX 确认"。
 
 ### 目录(按需挑一页读)
 
