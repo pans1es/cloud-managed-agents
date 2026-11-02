@@ -94,7 +94,7 @@ https://app.notion.com/p/40a2cfb068d781a19891ddcfab33705a
 ## 已确定的核心决策(摘要,以 Notion 为准)
 
 - 纯云端托管;云端大脑 + 本地手脚。
-- 执行底座:Pi(Dify 待确认)。
+- 执行底座:自定义运行时接口(创建会话 / 运行 / 事件流 / 取消 / 恢复),Pi 作为第一个实现;不用 Dify(DQ-11)。
 - 工具与 Loop 解耦:Loop 只认 Tools Gateway / Skills Gateway。
 - 版本规则:上层 Harness 变动 = 冷启动 + 大版本 + 重启沙箱;下层工具 / Skill 变动 = 热更新 + 小版本 + 不重启沙箱。
 
